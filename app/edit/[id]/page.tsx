@@ -1,6 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+
+
 interface Todo {
   id: string;
   title: string;
@@ -8,11 +14,16 @@ interface Todo {
   completed: boolean;
 }
 
-interface EditTodoProps {
-  todoId: string;
-}
+// interface EditTodoProps {
+//   id: string;
+// }
 
-function page({ todoId }: EditTodoProps) {
+function page() {
+  const router = useRouter();
+  const { id } = useParams();
+  if (!id) {
+    return <div>Todo not found</div>;
+  }
 
   const [todo, setTodo] = useState<Todo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,14 +31,14 @@ function page({ todoId }: EditTodoProps) {
   useEffect(() => {
     const fetchTodo = async () => {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/todo/${todoId}`);
+      const response = await fetch(`http://localhost:4000/todo/${id}`);
       const data = await response.json();
       setTodo(data);
       setLoading(false);
     };
 
     fetchTodo();
-  }, [todoId]);
+  }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (!todo) return;
@@ -44,7 +55,7 @@ function page({ todoId }: EditTodoProps) {
 
     if (!todo) return;
 
-    const response = await fetch(`http://localhost:4000/todo/${todoId}`, {
+    const response = await fetch(`http://localhost:4000/todo/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -54,6 +65,7 @@ function page({ todoId }: EditTodoProps) {
 
     if (response.ok) {
       alert("Todo updated successfully!");
+      router.push('/');
     }
   };
   if (!todo) {
@@ -76,7 +88,7 @@ function page({ todoId }: EditTodoProps) {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">Edit Todo</h2>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-600">Title</label>
             <input
@@ -85,6 +97,7 @@ function page({ todoId }: EditTodoProps) {
               value={todo?.title || ""}
               onChange={handleChange}
               className="mt-1 w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={todo?.title || "Enter title"}
             />
           </div>
 
@@ -96,6 +109,7 @@ function page({ todoId }: EditTodoProps) {
               value={todo?.description || ""}
               onChange={handleChange}
               className="mt-1 w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={todo?.description || "Enter description"}
             />
           </div>
 

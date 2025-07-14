@@ -10,11 +10,35 @@ function page() {
   const [description, setDescription] = useState('');
   const [completed, setCompleted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const todo = { title, description, completed };
+  //   console.log('Todo created:', todo);
+  //   // You can send this to your backend API using fetch/axios
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const todo = { title, description, completed };
-    console.log('Todo created:', todo);
-    // You can send this to your backend API using fetch/axios
+
+    const response = await fetch('http://localhost:4000/todo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(todo),
+    });
+
+    if (response.ok) {
+      alert('Todo created successfully!');
+      // Optionally redirect or reset the form
+      setTitle('');
+      setDescription('');
+      setCompleted(false);
+    } else {
+      alert('Failed to create todo');
+    }
   };
 
   return (
