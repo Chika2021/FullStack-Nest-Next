@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Request, Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { Todo, TodoSchema } from './schema/todo.schema';
 import { AuthGuard } from '@nestjs/passport';
@@ -9,13 +9,15 @@ export class TodoController {
 
     @UseGuards(AuthGuard('jwt')) // Ensure that the user is authenticated
     @Get()
-        async getTodo() {
-            return await this.todoService.getTodo();
+        async getTodo(@Request() req): Promise<Todo[]> {
+            const id = req.user.id; // Get the user ID from the request
+            return await this.todoService.getTodo(id);
         }
     @UseGuards(AuthGuard('jwt')) // Ensure that the user is authenticated
     @Post()
-        async createTodo(@Body() todo:Todo) {
-            return await this.todoService.createTodo(todo)
+        async createTodo(@Request() req, @Body() todo:Todo) {
+            const id = req.user.id; // Get the user ID from the request
+            return await this.todoService.createTodo(todo, id);
         }
     @UseGuards(AuthGuard('jwt')) // Ensure that the user is authenticated
     @Put(':id')

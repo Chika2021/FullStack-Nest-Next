@@ -8,12 +8,12 @@ export class TodoService {
 
     constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
 
-    async getTodo(): Promise<Todo[]> {
-        return await this.todoModel.find().exec();
+    async getTodo(id:string): Promise<Todo[]> {
+        return await this.todoModel.find({ user: id }).exec();
     }
 
-    async createTodo(todo:Todo): Promise<Todo> {
-        return await this.todoModel.create(todo);
+    async createTodo(todo:Todo, id:string): Promise<Todo> {
+        return await this.todoModel.create({...todo, user: id });
     }
 
     async updateTodo(todo:Todo, id: string):Promise<Todo> {

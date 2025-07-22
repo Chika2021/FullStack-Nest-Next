@@ -24,7 +24,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    
+  
     // Simulating an API call to fetch todos
     const fetchTodos = async () => {
       setLoading(true);
@@ -51,6 +51,7 @@ export default function Home() {
     };
 
     fetchTodos();
+    
   }, []);
 
   if (loading) {
