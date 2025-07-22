@@ -82,15 +82,23 @@ export default function Home() {
       }
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
   
 
   return (
   
     <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="flex justify-end mb-20 px-20">
+      <div className="flex justify-between mb-20 px-20">
             <Link href="/create" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
               Create Todo
             </Link>
+            <button onClick={handleLogout} className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+              Logout
+            </button>
           </div>
       <div className="max-w-4xl mx-auto">
         <div>

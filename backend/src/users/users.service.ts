@@ -74,4 +74,9 @@ export class UsersService {
     async findById(id: string): Promise<User | null> {
         return this.userModel.findById(id);
     }
+    async logout(): Promise<{ message: string }> {
+        // For JWT, logout is handled on the client by removing the token.
+        // Optionally, you can implement token blacklisting here.
+        return { message: 'Logout successful. Please remove your token on the client.' };
+    }
 }

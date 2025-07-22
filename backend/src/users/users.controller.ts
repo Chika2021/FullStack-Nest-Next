@@ -23,4 +23,8 @@ export class UsersController {
     async login(@Body() userDto: UserDto): Promise<any> {
         return await this.usersService.login(userDto);
     }
+    @Post('logout')
+    async logout(): Promise<{ message: string }> {
+        return await this.usersService.logout();
+    }
 }
