@@ -52,6 +52,7 @@ function page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
 
     if (!todo) return;
 
@@ -59,6 +60,7 @@ function page() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(todo),
     });
