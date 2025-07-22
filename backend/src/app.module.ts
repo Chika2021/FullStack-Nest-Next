@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TodoModule } from './todo/todo.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { ConfigModule } from '@nestjs/config';
       ignoreEnvFile: false, // Do not ignore the .env file
     }),
     MongooseModule.forRoot(process.env.DB_URI || 'mongodb://localhost:27017/todo'),
-    TodoModule],
+    TodoModule,
+    UsersModule,
+    AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

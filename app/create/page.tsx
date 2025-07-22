@@ -1,43 +1,45 @@
 'use client'
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import React, { FormEvent, useState } from 'react'
 
 // This is a simple Todo creation page using React and Tailwind CSS
 // It allows users to input a title, description, and completion status for a new Todo item
 
 function page() {
-
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [completed, setCompleted] = useState(false);
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const todo = { title, description, completed };
-  //   console.log('Todo created:', todo);
-  //   // You can send this to your backend API using fetch/axios
-  // };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const todo = { title, description, completed };
-
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You must be logged in to create a todo');
+      return;
+    }
     const response = await fetch('http://localhost:4000/todo', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(todo),
     });
 
     if (response.ok) {
       alert('Todo created successfully!');
-      // Optionally redirect or reset the form
       setTitle('');
       setDescription('');
       setCompleted(false);
+      router.push('/');
     } else {
-      alert('Failed to create todo');
+      const errorText = await response.text();
+      alert('Failed to create todo: ' + errorText);
     }
   };
 

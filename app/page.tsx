@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+
 
 
 
@@ -17,20 +18,35 @@ interface Todo {
 }
 
 export default function Home() {
-
+  const router = useRouter();
 
   const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    
     // Simulating an API call to fetch todos
     const fetchTodos = async () => {
       setLoading(true);
       // Here you would typically fetch from your API
       // For example:
-      const response = await fetch('http://localhost:4000/todo');
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You must be logged in to view todos');
+        router.push('/login');
+        setLoading(false);
+        return;
+      }
+      const response = await fetch('http://localhost:4000/todo', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if(!response) {
+        console.log('Cannot Fetch Data')
+      }
       const data = await response.json();
-      setTodos(data);
+      setTodos(Array.isArray(data) ? data : []);
       setLoading(false);
     };
 
@@ -47,8 +63,16 @@ export default function Home() {
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this todo?")) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You must be logged in to delete a todo');
+        return;
+      }
       const response = await fetch(`http://localhost:4000/todo/${id}`, {
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (response.ok) {
