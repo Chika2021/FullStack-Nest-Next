@@ -116,7 +116,7 @@ export default function Home() {
           </div>
       <div className="max-w-4xl mx-auto">
         <div>
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-700">Todo List {userName && ` ${userName}`}</h1>
+          <h1 className="text-3xl font-bold text-center mb-8 text-gray-700">Welcome {userName && ` ${userName}`}</h1>
 
         </div>
 

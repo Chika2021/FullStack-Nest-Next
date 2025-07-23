@@ -17,9 +17,6 @@ export class UsersService {
     }
 
     async createUser(userDto: UserDto): Promise<User> {
-
-        // Validate user data before creating
-        // console.log('Creating user:', userDto);
         const { username, email, password } = userDto;
         if(!username || !email || !password) {
             return { message: 'Invalid user data is required' } as any;
