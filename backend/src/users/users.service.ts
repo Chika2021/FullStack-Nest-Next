@@ -55,7 +55,7 @@ export class UsersService {
         }
         const token = this.jwtService.sign({id: user._id, email: user.email})
 
-        return { token } as any
+        return { token, user: { username: user.username, email: user.email } } as any
           
     }
 

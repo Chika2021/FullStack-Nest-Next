@@ -22,11 +22,14 @@ const router = useRouter()
     });
     if (response.ok) {
       const data = await response.json();
+      console.log(data);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.user.username);
       alert('Login successful!');
+      router.push('/');
       setEmail('');
       setPassword('');
-      router.push('/');
+      
     } else {
       alert('Failed to login');
     }

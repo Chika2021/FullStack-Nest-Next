@@ -11,6 +11,7 @@ export class TodoController {
     @Get()
         async getTodo(@Request() req): Promise<Todo[]> {
             const id = req.user.id; // Get the user ID from the request
+            // const user = req.user; // Get the user object from the request
             return await this.todoService.getTodo(id);
         }
     @UseGuards(AuthGuard('jwt')) // Ensure that the user is authenticated

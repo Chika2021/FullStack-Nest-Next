@@ -3,13 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Todo } from './schema/todo.schema';
 
+
 @Injectable()
 export class TodoService {
 
     constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {}
 
     async getTodo(id:string): Promise<Todo[]> {
-        return await this.todoModel.find({ user: id }).exec();
+        return await this.todoModel.find({ user: id }).populate('user', 'username email'); // Populate user details
     }
 
     async createTodo(todo:Todo, id:string): Promise<Todo> {

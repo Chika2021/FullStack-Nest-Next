@@ -22,6 +22,7 @@ export default function Home() {
 
   const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState<boolean>(true);
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
   
@@ -30,6 +31,18 @@ export default function Home() {
       setLoading(true);
       // Here you would typically fetch from your API
       // For example:
+      const storedName = localStorage.getItem('username');
+      if(storedName) {
+        setUserName(storedName);
+        alert(`Welcome back, ${storedName}!`);
+      } 
+      if (!storedName) {
+        alert('You must be logged in to view todos');
+        router.push('/login');
+        setLoading(false);
+        return;
+      }
+      
       const token = localStorage.getItem('token');
       if (!token) {
         alert('You must be logged in to view todos');
@@ -103,8 +116,8 @@ export default function Home() {
           </div>
       <div className="max-w-4xl mx-auto">
         <div>
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-700">Todo List</h1>
-          
+          <h1 className="text-3xl font-bold text-center mb-8 text-gray-700">Todo List {userName && ` ${userName}`}</h1>
+
         </div>
 
         <div className="space-y-4">

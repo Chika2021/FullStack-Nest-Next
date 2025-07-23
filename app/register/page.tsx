@@ -25,6 +25,7 @@ export default function RegisterPage() {
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem('token', data.token);
+            localStorage.setItem('username', data.user.username);
             alert('Registration successful!');
             setUsername('');
             setEmail('');
