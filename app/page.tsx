@@ -34,11 +34,10 @@ export default function Home() {
       const storedName = localStorage.getItem('username');
       if(storedName) {
         setUserName(storedName);
-        alert(`Welcome back, ${storedName}!`);
       } 
       if (!storedName) {
-        alert('You must be logged in to view todos');
-        router.push('/login');
+        // alert('You must be logged in to view todos');
+        // router.push('/login');
         setLoading(false);
         return;
       }
@@ -101,6 +100,8 @@ export default function Home() {
     localStorage.removeItem('token');
     router.push('/login');
   };
+
+  const sortedTodos = [...todos].sort((a, b) => (a._id < b._id ? 1 : -1));
   
 
   return (
@@ -121,7 +122,7 @@ export default function Home() {
         </div>
 
         <div className="space-y-4">
-          {todos.map((todo) => (
+          {sortedTodos.map((todo) => (
             <div
               key={todo._id }
               className="bg-white rounded-xl shadow p-4 flex justify-between items-start"

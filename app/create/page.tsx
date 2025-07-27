@@ -32,7 +32,7 @@ function page() {
     });
 
     if (response.ok) {
-      alert('Todo created successfully!');
+      // alert('Todo created successfully!');
       setTitle('');
       setDescription('');
       setCompleted(false);
